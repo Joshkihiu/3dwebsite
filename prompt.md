@@ -311,8 +311,10 @@ Rewrite the words for `<BRAND>`, keep the rhythm: 2–4 words per line, one ital
 .s8 { background: linear-gradient(180deg, #f4efe5 0%, #ece3d3 100%); }
 .s8__head { position: absolute; left: 0; right: 0; top: 13vh; text-align: center; z-index: 3; }
 .s8__head .title { font-size: clamp(34px, 4.6vw, 78px); }
-.s8__band { position: absolute; left: 0; right: 0; bottom: 0; height: 54vh; display: flex; gap: 10px; padding: 0 10px; }
+.s8__band { position: absolute; left: 0; right: 0; bottom: 0; height: 58vh; display: flex; }
 .s8__band .poster { position: relative; flex: 1; height: 100%; width: auto; top: auto; left: auto; right: auto; object-fit: cover; }
+.s8__band .poster:nth-child(2) { margin-left: -4.5%; z-index: 2; }   /* panels overlap, no gaps */
+.s8__band .poster:nth-child(3) { margin-left: -4.5%; z-index: 3; }
 ```
 
 **09 — full-bleed band (dark):** image behind, centred heading over it.
@@ -486,30 +488,56 @@ Full-screen bone overlay, z-50, spinner rotates 1.1s linear. It fades out (`.don
 
 ---
 
-## 11. Responsive (≤ 760px)
+## 11. Responsive (≤ 760px) — the same layout, scaled down
+
+**Do not re-flow the sections.** The phone layout is a 1:1 replica of the desktop: same 100vh stage, same left/right arrangement, same absolute positions — the artwork and the type just get smaller.
 
 ```css
+:root { --pad: 16px; }
+section { height: 100svh; min-height: 100svh; }   /* keep the one-screen-per-section stage */
+body::after { display: none; }                     /* grain off on phones (perf) */
+
 .nav__links { display: none; }
-.hero__word { font-size: clamp(60px, 19vw, 150px); }
-.hero__tag { font-size: 16px; }
-.s1__text, .s4__text, .s6__text { left: 18px; right: 18px; width: auto; top: auto; bottom: 10vh; }
-.s2__text, .s3__text, .s5__text { left: 18px; right: 18px; width: auto; top: 13vh; }
-.s1 .poster { left: auto; right: 14px; top: 12vh; width: 50vw; height: 36vh; }
-.s2__art   { left: auto; right: 18px; top: auto; bottom: 8vh; width: 56vw; }
-.s3 .poster { right: -8vw; top: auto; bottom: 7vh; width: 56vw; height: 32vh; }
-.s4 .poster { right: 14px; top: 12vh; width: 50vw; height: 34vh; }
-.s5 .poster--a { left: 14px; top: 12vh; width: 42vw; height: 30vh; }
-.s5 .poster--b { left: calc(14px + 36vw); top: 26vh; width: 38vw; height: 26vh; }
-.s6 .poster { right: 14px; top: 12vh; width: 52vw; height: 52vw; }
-.s7__text { left: 18px; right: 18px; width: auto; top: 13vh; }
-.s7 .poster { right: 14px; top: auto; bottom: 8vh; width: 50vw; height: 32vh; }
-.s8__head { top: 10vh; padding: 0 18px; }
-.s8__band { height: 42vh; gap: 6px; padding: 0 6px; }
-.s9__inner .title { font-size: clamp(34px, 10vw, 62px); }
-.foot { padding: 48px 18px 40px; }
-.foot .cols { gap: 26px; }
-.copy { max-width: none; }
+.nav__cta { font-size: 8px; padding: 8px 12px; }
+.hero__word { font-size: clamp(56px, 19vw, 110px); }
+.hero__tag { font-size: 12.5px; }
+.hero__hint { display: none; }
+
+.eyebrow { font-size: 7.5px; margin-bottom: 10px; }
+.title { font-size: clamp(19px, 5.8vw, 27px); }
+.copy { font-size: 10.5px; line-height: 1.52; margin-top: 10px; max-width: none; }
+.ghost { font-size: 46vw; }
+
+/* artwork shrinks, positions stay the same as desktop */
+.s1 .poster { left: 4vw; top: 15vh; width: 38vw; height: 28vh; }
+.s1__text   { left: 48vw; top: 24vh; width: 48vw; }
+.s2__text   { left: 4vw; top: 22vh; width: 46vw; }
+.s2__art    { right: 4vw; top: 16vh; width: 38vw; }
+.s3__text   { left: 4vw; top: 24vh; width: 46vw; }
+.s3 .poster { right: -4vw; top: 12vh; width: 38vw; height: 30vh; }
+.s4__text   { left: 4vw; top: 26vh; width: 46vw; }
+.s4 .poster { right: 4vw; top: 14vh; width: 36vw; height: 28vh; }
+.s5__text   { left: 50vw; top: 26vh; width: 46vw; }
+.s5 .poster--a { left: 4vw;  top: 14vh; width: 28vw; height: 26vh; }
+.s5 .poster--b { left: 22vw; top: 33vh; width: 24vw; height: 24vh; }
+.s6__text   { left: 4vw; top: 26vh; width: 46vw; }
+.s6 .poster { right: 4vw; top: 16vh; width: 38vw; height: 30vh; }
+.s7__text   { left: 4vw; top: 22vh; width: 46vw; }
+.s7 .poster { right: -4vw; top: 12vh; width: 36vw; height: 34vh; }
+.s8__head { top: 12vh; }
+.s8__band { height: 54vh; }
+.s9__inner .title { font-size: clamp(28px, 8.4vw, 48px); }
 ```
+
+Rules of thumb for the shrink: artwork ≈ 36–38vw wide, titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on).
+
+**The creature on phones:** scale it to **0.19** of the viewport height (desktop is 0.30) and offset its flight anchors by `+0.16` in x and `+0.30` in y so it hovers above-right of the copy instead of over it.
+
+**Smoothness on phones:**
+- `renderer.setPixelRatio(min(dpr, 1.5))` and `antialias: false` — desktop keeps `2` / `true`.
+- Drop the grain overlay (`body::after`) on mobile.
+- Cache the parallax elements at start-up and skip any section more than ~1.6 viewports away, so the scroll handler only writes a handful of transforms per frame.
+- Same for `resize`: re-apply the pixel ratio.
 
 On mobile the creature simply keeps its anchors — they are already in viewport units.
 
