@@ -508,28 +508,32 @@ body::after { display: none; }                     /* grain off on phones (perf)
 .copy { font-size: 10.5px; line-height: 1.52; margin-top: 10px; max-width: none; }
 .ghost { font-size: 46vw; }
 
-/* artwork shrinks AND is anchored to the bottom, so no dead space is left under it */
-.s1 .poster { left: 3vw; top: auto; bottom: 10vh; width: 42vw; height: 46vh; }
-.s1__text   { left: 48vw; top: 17vh; width: 49vw; }
-.s2__text   { left: 4vw; top: 17vh; width: 46vw; }
-.s2__art    { right: 3vw; top: auto; bottom: 12vh; width: 56vw; }
-.s3__text   { left: 4vw; top: 17vh; width: 46vw; }
-.s3 .poster { right: -4vw; top: auto; bottom: 8vh; width: 42vw; height: 48vh; }
-.s4__text   { left: 4vw; top: 20vh; width: 46vw; }
-.s4 .poster { right: 3vw; top: auto; bottom: 10vh; width: 40vw; height: 46vh; }
-.s5__text   { left: 48vw; top: 17vh; width: 49vw; }
-.s5 .poster--a { left: 3vw;  top: auto; bottom: 16vh; width: 30vw; height: 40vh; }
-.s5 .poster--b { left: 24vw; top: auto; bottom: 8vh;  width: 26vw; height: 36vh; }
-.s6__text   { left: 4vw; top: 20vh; width: 46vw; }
-.s6 .poster { right: 3vw; top: auto; bottom: 12vh; width: 44vw; height: 44vh; }
-.s7__text   { left: 4vw; top: 17vh; width: 46vw; }
-.s7 .poster { right: -4vw; top: auto; bottom: 8vh; width: 40vw; height: 50vh; }
-.s8__head { top: 12vh; }
-.s8__band { height: 62vh; }
+/* each section becomes ONE flex row: artwork keeps its own proportions, height follows the content */
+section { height: auto; min-height: 0; }
+.s1, .s2, .s3, .s4, .s5, .s6, .s7 { display: flex; align-items: center; gap: 5vw; padding: 13vh var(--pad) 9vh; }
+.s1__text, .s2__text, .s3__text, .s4__text, .s5__text, .s6__text, .s7__text {
+  position: static; inset: auto; flex: 1 1 auto; width: auto; max-width: none;
+}
+.s1 .poster, .s2__art, .s3 .poster, .s4 .poster,
+.s5 .poster--a, .s5 .poster--b, .s6 .poster, .s7 .poster {
+  position: static; inset: auto; flex: 0 0 auto;
+  width: 40vw; height: auto; aspect-ratio: 2 / 3; object-fit: cover;   /* never stretched */
+}
+.s2__art { aspect-ratio: 1 / 1; }
+.s1 .poster { order: 0; } .s1__text { order: 1; }
+.s2__text { order: 0; } .s2__art { order: 1; }
+.s3__text, .s4__text, .s6__text, .s7__text { order: 0; }
+.s3 .poster, .s4 .poster, .s6 .poster, .s7 .poster { order: 1; }
+.s5 .poster--a { order: 0; width: 26vw; }
+.s5 .poster--b { order: 1; width: 24vw; margin-left: -6vw; }
+.s5__text { order: 2; }
+.s8 { display: block; padding: 13vh 0 0; }
+.s8__head { position: static; inset: auto; padding: 0 var(--pad); margin-bottom: 5vh; text-align: left; }
+.s8__band { position: relative; inset: auto; height: 46vh; }
 .s9__inner .title { font-size: clamp(28px, 8.4vw, 48px); }
 ```
 
-Rules of thumb for the shrink: artwork ≈ 40–44vw wide, titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on). The artwork is **bottom-anchored** (`bottom: 8–16vh`, `top: auto`) so the leftover space is a tidy 10–15% strip instead of a big hole under the picture.
+Rules of thumb for the shrink: artwork ≈ 40vw wide with `aspect-ratio: 2/3` (or `1/1` for the disc), titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on). Because the section height follows its content, there is **no empty strip left under the artwork** — the next section starts a comfortable 9vh below it. Never force a fixed `height` on the artwork; that is what stretches it.
 
 **The creature on phones:** scale it to **0.19** of the viewport height (desktop is 0.30) and offset its flight anchors by `+0.16` in x and `+0.30` in y so it hovers above-right of the copy instead of over it.
 
@@ -537,7 +541,7 @@ Rules of thumb for the shrink: artwork ≈ 40–44vw wide, titles 19–27px, cop
 - `renderer.setPixelRatio(min(dpr, 1.5))` and `antialias: false` — desktop keeps `2` / `true`.
 - Drop the grain overlay (`body::after`) on mobile.
 - Cache the parallax elements at start-up and skip any section more than ~1.6 viewports away, so the scroll handler only writes a handful of transforms per frame.
-- Multiply the parallax amplitude by **0.45** on phones (desktop stays 1) so the artwork drifts gently instead of sliding out of frame.
+- Multiply the parallax amplitude by **0.2** on phones (desktop stays 1) so the artwork drifts gently instead of sliding out of frame.
 - Same for `resize`: re-apply the pixel ratio.
 
 On mobile the creature simply keeps its anchors — they are already in viewport units.
