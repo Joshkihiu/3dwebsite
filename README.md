@@ -10,16 +10,15 @@ The page loads a local `.glb` model, so it has to be served over HTTP — openin
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000/newindex.html>.
+Then open <http://localhost:8000/>.
 
 ## What is in here
 
 | File | What it is |
 | --- | --- |
-| `newindex.html` | The page: markup, styles and the scroll-driven three.js scene in one file |
+| `index.html` | The page: markup, styles and the scroll-driven three.js scene in one file |
 | `Assets/animated_flying_fluttering_butterfly_loop_v2.0.glb` | Rigged butterfly, with the `hover` clip driving the wings |
 | `Assets/*.jpg`, `Assets/download.png` | Artwork used in the sections |
-| `index.html` | The earlier Melli page |
 
 ## The butterfly
 
