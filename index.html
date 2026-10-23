@@ -197,26 +197,74 @@ section { position: relative; min-height: 100vh; height: 100vh; overflow: hidden
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 760px) {
+  :root { --pad: 22px; }
+
+  /* chrome */
+  .nav { padding: 16px var(--pad) 0; }
   .nav__links { display: none; }
-  .hero__word { font-size: clamp(60px, 19vw, 150px); }
-  .hero__tag { font-size: 16px; }
-  .s1__text, .s4__text, .s6__text { left: 18px; right: 18px; width: auto; top: auto; bottom: 10vh; }
-  .s2__text, .s3__text, .s5__text { left: 18px; right: 18px; width: auto; top: 13vh; }
-  .s1 .poster { left: auto; right: 14px; top: 12vh; width: 50vw; height: 36vh; }
-  .s2__art { left: auto; right: 18px; top: auto; bottom: 8vh; width: 56vw; }
-  .s3 .poster { right: -8vw; top: auto; bottom: 7vh; width: 56vw; height: 32vh; }
-  .s4 .poster { right: 14px; top: 12vh; width: 50vw; height: 34vh; }
-  .s5 .poster--a { left: 14px; top: 12vh; width: 42vw; height: 30vh; }
-  .s5 .poster--b { left: calc(14px + 36vw); top: 26vh; width: 38vw; height: 26vh; }
-  .s6 .poster { right: 14px; top: 12vh; width: 52vw; height: 52vw; }
-  .s7__text { left: 18px; right: 18px; width: auto; top: 13vh; }
-  .s7 .poster { right: 14px; top: auto; bottom: 8vh; width: 50vw; height: 32vh; }
-  .s8__head { top: 10vh; padding: 0 18px; }
-  .s8__band { height: 42vh; gap: 6px; padding: 0 6px; }
-  .s9__inner .title { font-size: clamp(34px, 10vw, 62px); }
-  .foot { padding: 48px 18px 40px; }
-  .foot .cols { gap: 26px; }
-  .copy { max-width: none; }
+  .logo { margin-right: 0; }
+  .nav__cta { font-size: 9.5px; letter-spacing: .12em; padding: 10px 15px; }
+
+  /* sections flow instead of overlaying */
+  section { height: auto; min-height: 100vh; min-height: 100svh; }
+  .hero { height: 100vh; height: 100svh; }
+
+  /* hero */
+  .hero__inner { min-height: 100vh; min-height: 100svh; padding: 24vh var(--pad) 18vh; }
+  .hero__kicker { font-size: 8.5px; letter-spacing: .26em; margin-bottom: 22px; }
+  .hero__word { font-size: clamp(46px, 15.5vw, 96px); }
+  .hero__tag { font-size: 15px; margin-top: 18px; }
+  .hero__row { margin-top: 30px; gap: 16px; }
+  .hero__meta { font-size: 8.5px; }
+  .hero__hint { display: none; }
+
+  /* shared type */
+  .eyebrow { font-size: 9px; letter-spacing: .22em; margin-bottom: 16px; }
+  .title { font-size: clamp(30px, 8.6vw, 44px); line-height: 1.0; }
+  .copy { margin-top: 16px; font-size: 13.5px; line-height: 1.62; max-width: none; }
+  .ghost { display: none; }
+
+  /* every content section: text on top, artwork below, centred in the viewport */
+  .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8 {
+    display: flex; flex-direction: column; justify-content: center; gap: 30px;
+    padding: 17vh var(--pad) 13vh; height: auto; min-height: 100vh; min-height: 100svh;
+  }
+
+  .s1__text, .s2__text, .s3__text, .s4__text, .s5__text, .s6__text, .s7__text {
+    position: static; inset: auto; width: auto; max-width: none; order: 1;
+  }
+  .s8__head { position: static; inset: auto; padding: 0; text-align: left; order: 1; }
+
+  .s1 .poster, .s2__art, .s3 .poster, .s4 .poster,
+  .s5 .poster--a, .s5 .poster--b, .s6 .poster, .s7 .poster {
+    position: relative; inset: auto; order: 2;
+    width: 100%; height: auto; max-width: none;
+    aspect-ratio: 3 / 4;
+    transform-origin: 50% 50%;
+  }
+  .s2__art { aspect-ratio: 1 / 1; }
+  .s2__art::before { inset: -14px; }
+
+  /* 05 — the two posters sit side by side under the text */
+  .s5 { display: grid; grid-template-columns: 1fr 1fr; align-content: center; gap: 16px 12px; }
+  .s5__text { grid-column: 1 / -1; order: 0; }
+  .s5 .poster--a, .s5 .poster--b { inset: auto; width: 100%; aspect-ratio: 3 / 4; }
+
+  /* 08 — heading, then a shorter three-panel band */
+  .s8 { gap: 26px; }
+  .s8__band { position: static; inset: auto; height: 36vh; gap: 6px; padding: 0; order: 2; }
+  .s8__band .poster { position: relative; flex: 1; height: 100%; width: auto; aspect-ratio: auto; }
+
+  /* 09 — keep the full-bleed band */
+  .s9 { display: block; height: 100vh; height: 100svh; min-height: 0; padding: 0; }
+  .s9__inner { position: absolute; inset: 0; }
+  .s9__inner .title { font-size: clamp(34px, 11vw, 64px); }
+
+  /* footer */
+  .foot { padding: 46px var(--pad) 52px; }
+  .foot__row { gap: 26px; }
+  .foot .cols { gap: 30px; font-size: 12px; }
+  .foot .made { margin-top: 34px; font-size: 8px; }
 }
 </style>
 </head>
@@ -587,9 +635,14 @@ function baseTarget() {
     return r.top + scrollY + r.height * .5;
   });
 
+  /* phones: keep the creature higher and to the right of the copy */
+  const mob = innerWidth < 760;
+  const ox = mob ? 0.16 : 0;
+  const oy = mob ? 0.30 : 0;
+
   if (c <= centers[0]) {
     const a = anchors[0];
-    return { x: a.x, y: a.y, s: a.s, yaw: a.yaw, pitch: a.pitch, roll: a.roll, moving: 0 };
+    return { x: a.x + ox, y: a.y + oy, s: a.s, yaw: a.yaw, pitch: a.pitch, roll: a.roll, moving: 0 };
   }
 
   let i = 0;
@@ -603,8 +656,8 @@ function baseTarget() {
   const dive = Math.sin(t * Math.PI) * -.12;
 
   return {
-    x: lerp(A.x, B.x, t),
-    y: lerp(A.y, B.y, t) + dive,
+    x: lerp(A.x, B.x, t) + ox,
+    y: lerp(A.y, B.y, t) + dive + oy,
     s: lerp(A.s, B.s, t),
     yaw: lerpAngle(A.yaw, B.yaw, t),
     pitch: lerp(A.pitch, B.pitch, t),
@@ -758,7 +811,8 @@ function applyFlyer(f, dt, t, introZ, introScale) {
     f.z + introZ
   );
 
-  f.flight.scale.setScalar(halfH * 2 * .30 * f.cfg.scale * f.cur.s * introScale);
+  const sizeK = innerWidth < 760 ? 0.19 : 0.30;
+  f.flight.scale.setScalar(halfH * 2 * sizeK * f.cfg.scale * f.cur.s * introScale);
   f.flight.rotation.set(0, -f.cur.yaw * DEG, 0);
 
   const pitch = (f.cur.pitch - clamp(f.vy * 20, -24, 24) + Math.sin(t * 2.1 + 1) * 3 * calm) * DEG;
