@@ -508,28 +508,28 @@ body::after { display: none; }                     /* grain off on phones (perf)
 .copy { font-size: 10.5px; line-height: 1.52; margin-top: 10px; max-width: none; }
 .ghost { font-size: 46vw; }
 
-/* artwork shrinks, positions stay the same as desktop */
-.s1 .poster { left: 4vw; top: 15vh; width: 38vw; height: 28vh; }
-.s1__text   { left: 48vw; top: 24vh; width: 48vw; }
-.s2__text   { left: 4vw; top: 22vh; width: 46vw; }
-.s2__art    { right: 4vw; top: 16vh; width: 38vw; }
-.s3__text   { left: 4vw; top: 24vh; width: 46vw; }
-.s3 .poster { right: -4vw; top: 12vh; width: 38vw; height: 30vh; }
-.s4__text   { left: 4vw; top: 26vh; width: 46vw; }
-.s4 .poster { right: 4vw; top: 14vh; width: 36vw; height: 28vh; }
-.s5__text   { left: 50vw; top: 26vh; width: 46vw; }
-.s5 .poster--a { left: 4vw;  top: 14vh; width: 28vw; height: 26vh; }
-.s5 .poster--b { left: 22vw; top: 33vh; width: 24vw; height: 24vh; }
-.s6__text   { left: 4vw; top: 26vh; width: 46vw; }
-.s6 .poster { right: 4vw; top: 16vh; width: 38vw; height: 30vh; }
-.s7__text   { left: 4vw; top: 22vh; width: 46vw; }
-.s7 .poster { right: -4vw; top: 12vh; width: 36vw; height: 34vh; }
+/* artwork shrinks AND is anchored to the bottom, so no dead space is left under it */
+.s1 .poster { left: 3vw; top: auto; bottom: 10vh; width: 42vw; height: 46vh; }
+.s1__text   { left: 48vw; top: 17vh; width: 49vw; }
+.s2__text   { left: 4vw; top: 17vh; width: 46vw; }
+.s2__art    { right: 3vw; top: auto; bottom: 12vh; width: 56vw; }
+.s3__text   { left: 4vw; top: 17vh; width: 46vw; }
+.s3 .poster { right: -4vw; top: auto; bottom: 8vh; width: 42vw; height: 48vh; }
+.s4__text   { left: 4vw; top: 20vh; width: 46vw; }
+.s4 .poster { right: 3vw; top: auto; bottom: 10vh; width: 40vw; height: 46vh; }
+.s5__text   { left: 48vw; top: 17vh; width: 49vw; }
+.s5 .poster--a { left: 3vw;  top: auto; bottom: 16vh; width: 30vw; height: 40vh; }
+.s5 .poster--b { left: 24vw; top: auto; bottom: 8vh;  width: 26vw; height: 36vh; }
+.s6__text   { left: 4vw; top: 20vh; width: 46vw; }
+.s6 .poster { right: 3vw; top: auto; bottom: 12vh; width: 44vw; height: 44vh; }
+.s7__text   { left: 4vw; top: 17vh; width: 46vw; }
+.s7 .poster { right: -4vw; top: auto; bottom: 8vh; width: 40vw; height: 50vh; }
 .s8__head { top: 12vh; }
-.s8__band { height: 54vh; }
+.s8__band { height: 62vh; }
 .s9__inner .title { font-size: clamp(28px, 8.4vw, 48px); }
 ```
 
-Rules of thumb for the shrink: artwork ≈ 36–38vw wide, titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on).
+Rules of thumb for the shrink: artwork ≈ 40–44vw wide, titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on). The artwork is **bottom-anchored** (`bottom: 8–16vh`, `top: auto`) so the leftover space is a tidy 10–15% strip instead of a big hole under the picture.
 
 **The creature on phones:** scale it to **0.19** of the viewport height (desktop is 0.30) and offset its flight anchors by `+0.16` in x and `+0.30` in y so it hovers above-right of the copy instead of over it.
 
@@ -537,6 +537,7 @@ Rules of thumb for the shrink: artwork ≈ 36–38vw wide, titles 19–27px, cop
 - `renderer.setPixelRatio(min(dpr, 1.5))` and `antialias: false` — desktop keeps `2` / `true`.
 - Drop the grain overlay (`body::after`) on mobile.
 - Cache the parallax elements at start-up and skip any section more than ~1.6 viewports away, so the scroll handler only writes a handful of transforms per frame.
+- Multiply the parallax amplitude by **0.45** on phones (desktop stays 1) so the artwork drifts gently instead of sliding out of frame.
 - Same for `resize`: re-apply the pixel ratio.
 
 On mobile the creature simply keeps its anchors — they are already in viewport units.

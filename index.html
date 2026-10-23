@@ -228,38 +228,38 @@ section { position: relative; min-height: 100vh; height: 100vh; overflow: hidden
   .ghost { font-size: 46vw; }
 
   /* 01 — poster left, copy right (desktop arrangement) */
-  .s1 .poster { left: 4vw; top: 15vh; width: 38vw; height: 28vh; }
-  .s1__text { left: 48vw; top: 24vh; width: 48vw; }
+  .s1 .poster { left: 3vw; top: auto; bottom: 10vh; width: 42vw; height: 46vh; }
+  .s1__text { left: 48vw; top: 17vh; width: 49vw; }
 
   /* 02 */
-  .s2__text { left: 4vw; top: 22vh; width: 46vw; }
-  .s2__art { right: 4vw; top: 16vh; width: 38vw; }
+  .s2__text { left: 4vw; top: 17vh; width: 46vw; }
+  .s2__art { right: 3vw; top: auto; bottom: 12vh; width: 56vw; }
   .s2__art::before { inset: -12px; }
 
   /* 03 */
-  .s3__text { left: 4vw; top: 24vh; width: 46vw; }
-  .s3 .poster { right: -4vw; top: 12vh; width: 38vw; height: 30vh; }
+  .s3__text { left: 4vw; top: 17vh; width: 46vw; }
+  .s3 .poster { right: -4vw; top: auto; bottom: 8vh; width: 42vw; height: 48vh; }
 
   /* 04 */
-  .s4__text { left: 4vw; top: 26vh; width: 46vw; }
-  .s4 .poster { right: 4vw; top: 14vh; width: 36vw; height: 28vh; }
+  .s4__text { left: 4vw; top: 20vh; width: 46vw; }
+  .s4 .poster { right: 3vw; top: auto; bottom: 10vh; width: 40vw; height: 46vh; }
 
   /* 05 — diptych left, copy right */
-  .s5__text { left: 50vw; top: 26vh; width: 46vw; }
-  .s5 .poster--a { left: 4vw; top: 14vh; width: 28vw; height: 26vh; }
-  .s5 .poster--b { left: 22vw; top: 33vh; width: 24vw; height: 24vh; }
+  .s5__text { left: 48vw; top: 17vh; width: 49vw; }
+  .s5 .poster--a { left: 3vw; top: auto; bottom: 16vh; width: 30vw; height: 40vh; }
+  .s5 .poster--b { left: 24vw; top: auto; bottom: 8vh; width: 26vw; height: 36vh; }
 
   /* 06 */
-  .s6__text { left: 4vw; top: 26vh; width: 46vw; }
-  .s6 .poster { right: 4vw; top: 16vh; width: 38vw; height: 30vh; }
+  .s6__text { left: 4vw; top: 20vh; width: 46vw; }
+  .s6 .poster { right: 3vw; top: auto; bottom: 12vh; width: 44vw; height: 44vh; }
 
   /* 07 */
-  .s7__text { left: 4vw; top: 22vh; width: 46vw; }
-  .s7 .poster { right: -4vw; top: 12vh; width: 36vw; height: 34vh; }
+  .s7__text { left: 4vw; top: 17vh; width: 46vw; }
+  .s7 .poster { right: -4vw; top: auto; bottom: 8vh; width: 40vw; height: 50vh; }
 
   /* 08 — same overlapped band */
   .s8__head { top: 12vh; padding: 0 var(--pad); }
-  .s8__band { height: 54vh; }
+  .s8__band { height: 62vh; }
 
   /* 09 */
   .s9__inner .title { font-size: clamp(28px, 8.4vw, 48px); }
@@ -481,6 +481,7 @@ const speedItems = speedEls.map((el) => ({
 
 function parallax() {
   const vh = innerHeight;
+  const amp = innerWidth < 760 ? 0.45 : 1;   /* gentler drift on phones so artwork stays in frame */
   for (const it of speedItems) {
     if (!it.sec) continue;
     const r = it.sec.getBoundingClientRect();
@@ -488,7 +489,7 @@ function parallax() {
     if (r.bottom < -vh * 0.3 || r.top > vh * 1.6) continue;
     const p = -r.top / vh;
     it.el.style.transform =
-      `translate3d(0, ${(p * it.speed * vh).toFixed(2)}px, 0) rotate(${(p * it.rot).toFixed(2)}deg)`;
+      `translate3d(0, ${(p * it.speed * vh * amp).toFixed(2)}px, 0) rotate(${(p * it.rot * amp).toFixed(2)}deg)`;
   }
 }
 
