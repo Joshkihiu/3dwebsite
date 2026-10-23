@@ -481,15 +481,18 @@ const speedItems = speedEls.map((el) => ({
 
 function parallax() {
   const vh = innerHeight;
-  const amp = innerWidth < 760 ? 0.2 : 1;   /* gentle drift on phones so artwork stays in frame */
+  const ph = innerWidth < 760;
+  const amp = ph ? 0.62 : 1;              /* phones keep most of the motion */
+  const lim = ph ? vh * 0.14 : Infinity;  /* but never drift further than this */
   for (const it of speedItems) {
     if (!it.sec) continue;
     const r = it.sec.getBoundingClientRect();
     /* skip work for sections that are nowhere near the viewport */
     if (r.bottom < -vh * 0.3 || r.top > vh * 1.6) continue;
     const p = -r.top / vh;
+    const dy = clamp(p * it.speed * vh * amp, -lim, lim);
     it.el.style.transform =
-      `translate3d(0, ${(p * it.speed * vh * amp).toFixed(2)}px, 0) rotate(${(p * it.rot * amp).toFixed(2)}deg)`;
+      `translate3d(0, ${dy.toFixed(2)}px, 0) rotate(${(p * it.rot * amp).toFixed(2)}deg)`;
   }
 }
 
@@ -827,7 +830,7 @@ function applyFlyer(f, dt, t, introZ, introScale) {
     f.z + introZ
   );
 
-  const sizeK = innerWidth < 760 ? 0.19 : 0.30;
+  const sizeK = innerWidth < 760 ? 0.26 : 0.30;
   f.flight.scale.setScalar(halfH * 2 * sizeK * f.cfg.scale * f.cur.s * introScale);
   f.flight.rotation.set(0, -f.cur.yaw * DEG, 0);
 

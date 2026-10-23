@@ -535,13 +535,13 @@ section { height: auto; min-height: 0; }
 
 Rules of thumb for the shrink: artwork ≈ 40vw wide with `aspect-ratio: 2/3` (or `1/1` for the disc), titles 19–27px, copy ≈ 10.5px, and every block keeps the desktop side of the page (poster left → text right, and so on). Because the section height follows its content, there is **no empty strip left under the artwork** — the next section starts a comfortable 9vh below it. Never force a fixed `height` on the artwork; that is what stretches it.
 
-**The creature on phones:** scale it to **0.19** of the viewport height (desktop is 0.30) and offset its flight anchors by `+0.16` in x and `+0.30` in y so it hovers above-right of the copy instead of over it.
+**The creature on phones:** scale it to **0.26** of the viewport height (desktop is 0.30) and offset its flight anchors by `+0.16` in x and `+0.30` in y so it hovers above-right of the copy instead of over it.
 
 **Smoothness on phones:**
 - `renderer.setPixelRatio(min(dpr, 1.5))` and `antialias: false` — desktop keeps `2` / `true`.
 - Drop the grain overlay (`body::after`) on mobile.
 - Cache the parallax elements at start-up and skip any section more than ~1.6 viewports away, so the scroll handler only writes a handful of transforms per frame.
-- Multiply the parallax amplitude by **0.2** on phones (desktop stays 1) so the artwork drifts gently instead of sliding out of frame.
+- Keep the parallax alive on phones: multiply the amplitude by **0.62** (desktop stays 1) and clamp each element's offset to **±14% of the viewport height**, so the artwork still visibly drifts and rotates while it can never slide out of its section.
 - Same for `resize`: re-apply the pixel ratio.
 
 On mobile the creature simply keeps its anchors — they are already in viewport units.
