@@ -167,8 +167,10 @@ section { position: relative; min-height: 100vh; height: 100vh; overflow: hidden
 .s8 { background: linear-gradient(180deg, #f4efe5 0%, #ece3d3 100%); z-index: 2; }
 .s8__head { position: absolute; left: 0; right: 0; top: 13vh; text-align: center; z-index: 3; }
 .s8__head .title { font-size: clamp(34px, 4.6vw, 78px); }
-.s8__band { position: absolute; left: 0; right: 0; bottom: 0; height: 54vh; display: flex; gap: 10px; padding: 0 10px; }
+.s8__band { position: absolute; left: 0; right: 0; bottom: 0; height: 58vh; display: flex; }
 .s8__band .poster { position: relative; flex: 1; height: 100%; width: auto; top: auto; left: auto; right: auto; object-fit: cover; }
+.s8__band .poster:nth-child(2) { margin-left: -4.5%; z-index: 2; }
+.s8__band .poster:nth-child(3) { margin-left: -4.5%; z-index: 3; }
 
 /* ---------- section 09 ---------- */
 .s9 { background: var(--void); color: var(--bone); z-index: 2; }
@@ -197,75 +199,78 @@ section { position: relative; min-height: 100vh; height: 100vh; overflow: hidden
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 760px) {
-  :root { --pad: 22px; }
+  :root { --pad: 16px; }
 
-  /* chrome */
-  .nav { padding: 16px var(--pad) 0; }
+  .nav { padding: 14px var(--pad) 0; }
   .nav__links { display: none; }
-  .logo { margin-right: 0; }
-  .nav__cta { font-size: 9.5px; letter-spacing: .12em; padding: 10px 15px; }
+  .logo { width: 30px; height: 30px; margin-right: 0; }
+  .logo svg { width: 24px; height: 24px; }
+  .nav__cta { font-size: 8px; letter-spacing: .12em; padding: 8px 12px; }
 
-  /* sections flow instead of overlaying */
-  section { height: auto; min-height: 100vh; min-height: 100svh; }
-  .hero { height: 100vh; height: 100svh; }
+  /* same 100vh stage as desktop — everything overlays, just smaller */
+  section { height: 100vh; height: 100svh; min-height: 100vh; min-height: 100svh; }
+  body::after { display: none; }
 
   /* hero */
-  .hero__inner { min-height: 100vh; min-height: 100svh; padding: 24vh var(--pad) 18vh; }
-  .hero__kicker { font-size: 8.5px; letter-spacing: .26em; margin-bottom: 22px; }
-  .hero__word { font-size: clamp(66px, 26vw, 122px); }
-  .hero__tag { font-size: 15px; margin-top: 18px; }
-  .hero__row { margin-top: 30px; gap: 16px; }
-  .hero__meta { font-size: 8.5px; }
+  .hero__inner { min-height: 100vh; min-height: 100svh; padding: 0 var(--pad); }
+  .hero__kicker { font-size: 7.5px; letter-spacing: .24em; margin-bottom: 16px; }
+  .hero__word { font-size: clamp(56px, 19vw, 110px); }
+  .hero__tag { font-size: 12.5px; margin-top: 12px; }
+  .hero__row { margin-top: 22px; gap: 12px; }
+  .hero__meta { font-size: 7.5px; }
+  .btn { font-size: 8.5px; padding: 11px 16px; gap: 8px; }
   .hero__hint { display: none; }
 
-  /* shared type */
-  .eyebrow { font-size: 9px; letter-spacing: .22em; margin-bottom: 16px; }
-  .title { font-size: clamp(30px, 8.6vw, 44px); line-height: 1.0; }
-  .copy { margin-top: 16px; font-size: 13.5px; line-height: 1.62; max-width: none; }
-  .ghost { display: none; }
+  /* type scale */
+  .eyebrow { font-size: 7.5px; letter-spacing: .2em; margin-bottom: 10px; }
+  .title { font-size: clamp(19px, 5.8vw, 27px); line-height: 1.02; }
+  .copy { font-size: 10.5px; line-height: 1.52; margin-top: 10px; max-width: none; }
+  .ghost { font-size: 46vw; }
 
-  /* every content section: text on top, artwork below, centred in the viewport */
-  .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8 {
-    display: flex; flex-direction: column; justify-content: center; gap: 30px;
-    padding: 17vh var(--pad) 13vh; height: auto; min-height: 100vh; min-height: 100svh;
-  }
+  /* 01 — poster left, copy right (desktop arrangement) */
+  .s1 .poster { left: 4vw; top: 15vh; width: 38vw; height: 28vh; }
+  .s1__text { left: 48vw; top: 24vh; width: 48vw; }
 
-  .s1__text, .s2__text, .s3__text, .s4__text, .s5__text, .s6__text, .s7__text {
-    position: static; inset: auto; width: auto; max-width: none; order: 1;
-  }
-  .s8__head { position: static; inset: auto; padding: 0; text-align: left; order: 1; }
+  /* 02 */
+  .s2__text { left: 4vw; top: 22vh; width: 46vw; }
+  .s2__art { right: 4vw; top: 16vh; width: 38vw; }
+  .s2__art::before { inset: -12px; }
 
-  .s1 .poster, .s2__art, .s3 .poster, .s4 .poster,
-  .s5 .poster--a, .s5 .poster--b, .s6 .poster, .s7 .poster {
-    position: relative; inset: auto; order: 2;
-    width: 100%; height: auto; max-width: none;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    transform-origin: 50% 50%;
-  }
-  .s2__art { aspect-ratio: 1 / 1; }
-  .s2__art::before { inset: -14px; }
+  /* 03 */
+  .s3__text { left: 4vw; top: 24vh; width: 46vw; }
+  .s3 .poster { right: -4vw; top: 12vh; width: 38vw; height: 30vh; }
 
-  /* 05 — the two posters sit side by side under the text */
-  .s5 { display: grid; grid-template-columns: 1fr 1fr; align-content: center; gap: 16px 12px; }
-  .s5__text { grid-column: 1 / -1; order: 0; }
-  .s5 .poster--a, .s5 .poster--b { inset: auto; width: 100%; aspect-ratio: 3 / 4; }
+  /* 04 */
+  .s4__text { left: 4vw; top: 26vh; width: 46vw; }
+  .s4 .poster { right: 4vw; top: 14vh; width: 36vw; height: 28vh; }
 
-  /* 08 — heading, then a shorter three-panel band */
-  .s8 { gap: 26px; }
-  .s8__band { position: static; inset: auto; height: 36vh; gap: 6px; padding: 0; order: 2; }
-  .s8__band .poster { position: relative; flex: 1; height: 100%; width: auto; aspect-ratio: auto; }
+  /* 05 — diptych left, copy right */
+  .s5__text { left: 50vw; top: 26vh; width: 46vw; }
+  .s5 .poster--a { left: 4vw; top: 14vh; width: 28vw; height: 26vh; }
+  .s5 .poster--b { left: 22vw; top: 33vh; width: 24vw; height: 24vh; }
 
-  /* 09 — keep the full-bleed band */
-  .s9 { display: block; height: 100vh; height: 100svh; min-height: 0; padding: 0; }
-  .s9__inner { position: absolute; inset: 0; }
-  .s9__inner .title { font-size: clamp(34px, 11vw, 64px); }
+  /* 06 */
+  .s6__text { left: 4vw; top: 26vh; width: 46vw; }
+  .s6 .poster { right: 4vw; top: 16vh; width: 38vw; height: 30vh; }
+
+  /* 07 */
+  .s7__text { left: 4vw; top: 22vh; width: 46vw; }
+  .s7 .poster { right: -4vw; top: 12vh; width: 36vw; height: 34vh; }
+
+  /* 08 — same overlapped band */
+  .s8__head { top: 12vh; padding: 0 var(--pad); }
+  .s8__band { height: 54vh; }
+
+  /* 09 */
+  .s9__inner .title { font-size: clamp(28px, 8.4vw, 48px); }
 
   /* footer */
-  .foot { padding: 46px var(--pad) 52px; }
-  .foot__row { gap: 26px; }
-  .foot .cols { gap: 30px; font-size: 12px; }
-  .foot .made { margin-top: 34px; font-size: 8px; }
+  .foot { padding: 34px var(--pad) 30px; }
+  .foot__row { gap: 18px; }
+  .foot strong { font-size: 20px; }
+  .foot .tag { font-size: 7.5px; letter-spacing: .18em; }
+  .foot .cols { gap: 18px; font-size: 10px; }
+  .foot .made { margin-top: 22px; font-size: 7px; letter-spacing: .2em; }
 }
 </style>
 </head>
@@ -467,15 +472,23 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: .25 });
 sections.forEach(s => io.observe(s));
 
+const speedItems = speedEls.map((el) => ({
+  el,
+  sec: el.closest('section'),
+  speed: parseFloat(el.dataset.speed) || 0,
+  rot: parseFloat(el.dataset.rot) || 0
+}));
+
 function parallax() {
   const vh = innerHeight;
-  for (const el of speedEls) {
-    const sec = el.closest('section');
-    if (!sec) continue;
-    const p = -sec.getBoundingClientRect().top / vh;
-    const speed = parseFloat(el.dataset.speed) || 0;
-    const rot = parseFloat(el.dataset.rot) || 0;
-    el.style.transform = `translate3d(0, ${(p * speed * vh).toFixed(2)}px, 0) rotate(${(p * rot).toFixed(2)}deg)`;
+  for (const it of speedItems) {
+    if (!it.sec) continue;
+    const r = it.sec.getBoundingClientRect();
+    /* skip work for sections that are nowhere near the viewport */
+    if (r.bottom < -vh * 0.3 || r.top > vh * 1.6) continue;
+    const p = -r.top / vh;
+    it.el.style.transform =
+      `translate3d(0, ${(p * it.speed * vh).toFixed(2)}px, 0) rotate(${(p * it.rot).toFixed(2)}deg)`;
   }
 }
 
@@ -508,8 +521,9 @@ onScroll();
 
 /* ---------- three ---------- */
 const canvas = document.getElementById('bee');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const isPhone = innerWidth < 760;
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isPhone, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, isPhone ? 1.5 : 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
@@ -826,6 +840,7 @@ function applyFlyer(f, dt, t, introZ, introScale) {
 let lastScrollY = scrollY;
 
 function onResize() {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 760 ? 1.5 : 2));
   renderer.setSize(innerWidth, innerHeight, false);
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
